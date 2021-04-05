@@ -1,0 +1,30 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="/fragments/head :: HeadFragment">
+    <title>Queues</title>
+<body>
+<div class="container">
+    <div th:replace="/fragments/header :: HeaderFragment"></div>
+
+    <nav class="d-flex" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/home">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Queues</li>
+        </ol>
+    </nav>
+    <div>
+        <div class="list-group col-3">
+            <!--todo: add message count in topics
+                 <span class="badge bg-primary rounded-pill" >14</span>
+            -->
+            <a th:each="q,stat:${queues}"
+                th:text="${q.toString()}"
+                th:href="${'/queues/'+q}"
+                class="btn list-group-item d-flex justify-content-between align-items-center">
+                Queue
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

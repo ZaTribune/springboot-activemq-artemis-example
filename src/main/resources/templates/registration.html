@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/head :: HeadFragment">
+    <title></title>
+<body>
+
+<div class="container">
+    <div th:replace="/fragments/header :: HeaderFragment"></div>
+    <form method="POST" class="col-lg-4 col-md-8 col-sm-12 container" th:object="${userForm}" th:action="@{/registration}">
+        <h2 class="form-signin-heading text-center">Create your account</h2>
+        <div class="form-group m-1">
+            <input type="text" th:field="*{username}" class="form-control" placeholder="Username"
+                   autofocus aria-label="">
+            <span class="invalid-feedback d-inline-block" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+        </div>
+
+        <div class="form-group m-1">
+            <input type="password" th:field="*{password}" class="form-control" placeholder="Password" aria-label="">
+            <span class="invalid-feedback d-inline-block" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+        </div>
+
+        <div class="form-group m-1">
+            <input type="password" th:field="*{passwordConfirm}" class="form-control"
+                   placeholder="Confirm your password" aria-label="">
+            <span class="invalid-feedback d-inline-block" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}"></span>
+        </div>
+
+        <button class="btn btn-lg btn-primary btn-block m-1" type="submit">Submit</button>
+    </form>
+
+</div>
+</body>
+</html>

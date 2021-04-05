@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="/fragments/head :: HeadFragment">
+    <title>Messaging System</title>
+<body>
+<div class="container">
+    <div th:replace="/fragments/header :: HeaderFragment"></div>
+      <div class="d-flex m-2" sec:authorize="isAuthenticated()">
+        <form id="logoutForm" method="POST" th:action="@{/logout}">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        </form>
+        <a class="btn btn-primary m-2" onclick="document.forms['logoutForm'].submit()">Logout</a>
+        <h2 class="d-inline-block m-1"><span sec:authentication="name"></span></h2>
+      </div>
+    <nav class="d-flex" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Home</li>
+        </ol>
+    </nav>
+        <div class="row row-cols-1 row-cols-md-4 g-4 m-0 p-0">
+            <div class="col">
+                <a class="btn card p-3 h-100" href="/queues">
+                    <img src="../static/svg/queues.svg" th:src="@{svg/queues.svg}" class="card-img-top w-25 m-auto" alt="queues">
+                    <div class="card-body">
+                        <h5 class="card-title">Queues</h5>
+                        <p class="card-text">Show available JMS queues.</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a class="btn card p-3 h-100">
+                    <img src="../static/svg/settings.svg" th:src="@{svg/settings.svg}"  class="card-img-top w-25 m-auto" alt="settings">
+                    <div class="card-body">
+                        <h5 class="card-title">Settings</h5>
+                        <p class="card-text">Configure different settings.</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a class="btn card p-3 h-100">
+                    <img src="../static/svg/stats.svg" th:src="@{svg/stats.svg}"  class="card-img-top w-25 m-auto" alt="stats">
+                    <div class="card-body">
+                        <h5 class="card-title">Stats</h5>
+                        <p class="card-text">View Different Statistics.</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a class="btn card p-3 h-100">
+                    <img src="../static/svg/about.svg" th:src="@{svg/about.svg}"  class="card-img-top w-25 m-auto" alt="about">
+                    <div class="card-body">
+                        <h5 class="card-title">About</h5>
+                        <p class="card-text">More information about the application.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
