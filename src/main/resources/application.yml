@@ -1,0 +1,32 @@
+spring:
+  jpa:
+    open-in-view: false
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:testdb
+  artemis:
+    broker-url: "tcp://localhost:61616"
+    user: artemis
+    password: artemis
+    mode: native
+  mvc:
+    async:
+      request-timeout: -1
+
+jms:
+  #custom
+  queues:
+    main-queue:
+      name: MAIN_QUEUE
+    chatting-queue:
+      name: CHATTING_QUEUE
+
+logging:
+  level:
+    org.apache.activemq.audit: debug
+    #root: debug
+#To specify a log level for all classes that don't have their own log level settings, the root logger can be set
+
+

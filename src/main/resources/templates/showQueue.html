@@ -3,7 +3,43 @@
 <head th:replace="/fragments/head :: HeadFragment">
     <title>show queue</title>
 <body>
+<div class="container">
+    <div th:replace="/fragments/header :: HeaderFragment"></div>
 
+    <!--to get queue-->
+    <span id="queueName" style="display: none;" th:text="${queueName}"></span>
+
+    <nav class="d-flex" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/home">Home</a></li>
+            <li class="breadcrumb-item"><a href="/queues">Queues</a></li>
+            <li class="breadcrumb-item active" aria-current="page" th:text="${name}">Selected</li>
+        </ol>
+    </nav>
+
+    <div class="row-cols-3 mt-2">
+        <form id="messagingForm" method="post" th:action="@{'/queues/send?queue='+${name}}" th:object="${message}">
+            <input type="text" class="form-control" th:field="*{content}" aria-label="">
+            <!--
+            Note that single input forms always get submitted when the enter key is pressed.
+            The only way to prevent this from happening is this:
+            -->
+            <input type="text" style="display: none;" aria-label=""/>
+        </form>
+        <button type="submit" class="btn btn-primary mt-2" th:attr="data-queue=${queueName}"
+                onclick="send(this.getAttribute('data-queue'))">Send</button>
+
+        <ul id="chatContainer" class="list-group">
+            <li th:if="${messages.size() != 0}" th:each="q,stat:${messages}"
+                th:text="${q}"
+                class="list-group-item">A second item
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+</body>
 <script type="application/javascript">
 
     function send(queue) {
@@ -24,7 +60,9 @@
     }
 
     if (!!window.EventSource) {
-        let eventSource = new EventSource("/sse/infinite");
+        let queueName =document.getElementById("queueName").innerHTML;
+        console.log("new connection "+ queueName);
+        let eventSource = new EventSource("/sse/infinite/"+queueName);
 
         eventSource.onmessage = function (e) {
             //if it's json
@@ -46,6 +84,7 @@
                 console.log('event: OPEN');
             } else if (e.readyState === EventSource.CLOSING) {
                 console.log('event: CLOSING');
+                eventSource.close();
             } else if (e.readyState === EventSource.CLOSED) {
                 console.log('event: CLOSED');
             }
@@ -54,38 +93,4 @@
         alert('The browser does not support Server-Sent Events');
     }
 </script>
-<div class="container">
-    <div th:replace="/fragments/header :: HeaderFragment"></div>
-
-    <nav class="d-flex" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/home">Home</a></li>
-            <li class="breadcrumb-item"><a href="/queues">Queues</a></li>
-            <li class="breadcrumb-item active" aria-current="page" th:text="${name}">Selected</li>
-        </ol>
-    </nav>
-
-    <div class="row-cols-3 mt-2">
-        <form id="messagingForm" method="post" th:action="@{'/queues/send?queue='+${name}}" th:object="${message}">
-            <input type="text" class="form-control" th:field="*{content}" aria-label="">
-            <!--
-            Note that single input forms always get submitted when the enter key is pressed.
-            The only way to prevent this from happening is this:
-            -->
-            <input type="text" style="display: none;" aria-label=""/>
-        </form>
-        <button type="submit" class="btn btn-primary mt-2" th:attr="data-queue=${name}"
-                onclick="send(this.getAttribute('data-queue'))">Send</button>
-
-        <ul id="chatContainer" class="list-group">
-            <li th:if="${messages.size() != 0}" th:each="q,stat:${messages}"
-                th:text="${q}"
-                class="list-group-item">A second item
-            </li>
-        </ul>
-    </div>
-
-
-</div>
-</body>
 </html>
